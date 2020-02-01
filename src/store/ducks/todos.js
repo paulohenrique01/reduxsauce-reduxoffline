@@ -6,7 +6,7 @@ import { markActionsOffline } from "redux-offline-queue";
  */
 export const { Types, Creators } = createActions({
   addTodoRequest: ["todo"],
-  addTodoSucess: ["todo"], 
+  addTodoSuccess: ["todo"], 
   //toggleTodoRequest: ["id"],
   //removeTodoRequest: ["id"]
 });
@@ -25,12 +25,18 @@ const add = (state = INITIAL_STATE, action) => [
   { ...action.todo, complete: false }
 ];
 
+const addSuccess = (state = INITIAL_STATE, action) =>
+  state.map(
+    todo =>
+      todo.hash === action.todo.hash ? { ...todo, ...action.todo} : todo
+  );
+
 /**
  * Reducer
  */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_TODO_REQUEST]:add,  
- // [Types.ADD_TODO_SUCCESS]: (state, { todo }) =>  state.update("data", data => [...data, todo]),
+  [Types.ADD_TODO_SUCCESS]: addSuccess,
   //[Types.TOGGLE_TODO_REQUEST]: toggle,
   //[Types.REMOVE_TODO_REQUEST]: remove
 });

@@ -1,11 +1,10 @@
 import { call, put } from "redux-saga/effects";
-import api from "../../services/api";
+import todoService from "../../services/todoService";
 
 import TodosActions from "../ducks/todos";
 
-export function* addTodo({todo}) {
-  alert(JSON.stringify(todo))
-  const response = yield call(api.post, JSON.stringify(todo));
-  alert(JSON.stringify(response))
-  yield put(TodosActions.addRepositorySuccess(response.data));
+export function* addTodo({todo}) {     
+  const {data} = yield call(todoService.saveTodo, todo);  
+ 
+  yield put(TodosActions.addTodoSuccess(data));
 }
